@@ -1,4 +1,4 @@
-import 'package:flutter_application_1/utils/js_date.dart' as js_date;
+import 'package:flutter_mobile_calendar/utils/js_date.dart' as js_date;
 
 typedef Date = js_date.JsDate;
 

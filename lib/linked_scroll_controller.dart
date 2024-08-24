@@ -6,7 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_application_1/infinite_list_view.dart';
+import 'package:flutter_mobile_calendar/infinite_list_view.dart';
 
 /// Sets up a collection of scroll controllers that mirror their movements to
 /// each other.

@@ -1,4 +1,4 @@
-import 'package:flutter_application_1/events/group.dart';
+import 'package:flutter_mobile_calendar/events/group.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

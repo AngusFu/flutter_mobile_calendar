@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/layouts.dart';
+import 'package:flutter_mobile_calendar/models/layouts.dart';
 
 class Style {
   String boxSizing;

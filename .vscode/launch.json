@@ -19,13 +19,13 @@
       ]
     },
     {
-      "name": "flutter_application_1 (profile mode)",
+      "name": "flutter_mobile_calendar (profile mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile"
     },
     {
-      "name": "flutter_application_1 (release mode)",
+      "name": "flutter_mobile_calendar (release mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"

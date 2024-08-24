@@ -1,5 +1,5 @@
-import 'package:flutter_application_1/utils/js_date.dart';
-import 'package:flutter_application_1/utils/lunar.dart';
+import 'package:flutter_mobile_calendar/utils/js_date.dart';
+import 'package:flutter_mobile_calendar/utils/lunar.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
