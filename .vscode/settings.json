@@ -1,0 +1,19 @@
+{
+  "cmake.ignoreCMakeListsMissing": true,
+  "liveServer.settings.port": 5501,
+  "files.associations": {
+    "*.ejs": "html",
+    "*.page-template": "vue",
+    "*.layout-template": "vue",
+    "*.vue": "vue"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/*.bak": true
+  }
+}
