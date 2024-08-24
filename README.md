@@ -1,22 +1,15 @@
 # flutter_mobile_calendar
 
-A new Flutter project.
 
-## Getting Started
+## Resources
 
-This project is a starting point for a Flutter application.
+- https://github.com/mpflutter/minitex
 
-A few resources to get you started if this is your first Flutter project:
+## JSON
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-<!--
-https://docs.flutter.dev/data-and-backend/serialization/json#code-generation
-https://dart-quicktype.netlify.app/
+```
 dart run build_runner watch --delete-conflicting-outputs
- -->
+```
+- https://dart-quicktype.netlify.app/
+- https://docs.flutter.dev/data-and-backend/serialization/json#code-generation
+
