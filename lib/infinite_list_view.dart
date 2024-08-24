@@ -114,16 +114,8 @@ class InfiniteListView extends StatefulWidget {
 }
 
 class InfiniteListViewState extends State<InfiniteListView> {
-  FixedExtentInfiniteScrollController? _controller;
-
   FixedExtentInfiniteScrollController get _effectiveController =>
       widget.controller;
-
-  @override
-  void dispose() {
-    _controller?.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
