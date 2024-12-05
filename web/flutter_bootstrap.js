@@ -89,29 +89,34 @@ function flutterBootstrap() {
         multiViewEnabled: true,
       });
 
-      function fetchEmbeddingFonts(callback) {
-        const req = new XMLHttpRequest();
-        req.open("GET", "assets/FontManifest.json");
-        req.responseType = "text";
-        req.onload = function () {
-          const arr = JSON.parse(req.responseText);
-          const fonts = [];
-          for (let index = 0; index < arr.length; index++) {
-            fonts.push(arr[index]["family"]);
-          }
-          callback(fonts);
-        };
-        req.send();
-      }
-      // Async Hook MiniTex
-      // Tips: 如果你不希望使用异步等待，可以直接硬编码 embeddingFonts 为 FontManifest.json 中的 family 数组。
-      await fetchEmbeddingFonts(function (embeddingFonts) {
-        MiniTex.MiniTex.install(
-          window.flutterCanvasKit,
-          window.devicePixelRatio,
-          []
-        );
-      });
+      // function fetchEmbeddingFonts(callback) {
+      //   const req = new XMLHttpRequest();
+      //   req.open("GET", "assets/FontManifest.json");
+      //   req.responseType = "text";
+      //   req.onload = function () {
+      //     const arr = JSON.parse(req.responseText);
+      //     const fonts = [];
+      //     for (let index = 0; index < arr.length; index++) {
+      //       fonts.push(arr[index]["family"]);
+      //     }
+      //     callback(fonts);
+      //   };
+      //   req.send();
+      // }
+      // // Async Hook MiniTex
+      // // Tips: 如果你不希望使用异步等待，可以直接硬编码 embeddingFonts 为 FontManifest.json 中的 family 数组。
+      // await fetchEmbeddingFonts(function (embeddingFonts) {
+      //   MiniTex.MiniTex.install(
+      //     window.flutterCanvasKit,
+      //     window.devicePixelRatio,
+      //     []
+      //   );
+      // });
+      MiniTex.MiniTex.install(
+        window.flutterCanvasKit,
+        window.devicePixelRatio,
+        []
+      );
 
       const app = await appRunner.runApp();
       const viewId = app.addView({
