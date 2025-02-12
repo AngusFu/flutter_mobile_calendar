@@ -2,6 +2,7 @@ import 'package:flutter_mobile_calendar/utils/js_date.dart' as js_date;
 
 typedef Date = js_date.JsDate;
 
+/// Adpated from https://github.com/jjonline/calendar.js
 class _CalendarJs {
   _CalendarJs();
 
