@@ -39,115 +39,47 @@ class LayoutGroup extends BaseRange {
   }) : super(start, end);
 }
 
-class Group extends BaseRange {
-  List<List<Event>> columnsOfEvents;
-  List<Map<String, int>> unusedRects;
-
-  Group()
-      : columnsOfEvents = [],
-        unusedRects = [],
-        super(double.infinity, double.negativeInfinity);
+// 定义 Group 类
+class Group implements BaseRange {
+  @override
+  double start = double.infinity;
+  @override
+  double end = double.negativeInfinity;
+  List<List<Event>> columnsOfEvents = [];
 
   void add(Event event) {
-    bool placed = _insert(event, unusedRects);
-
-    if (!placed) {
-      double start = this.start < event.start ? this.start : event.start;
-      double end = this.end > event.end ? this.end : event.end;
-      List<Map<String, int>> emptyRects = _getEmptyRects(start, end);
-
-      if (emptyRects.isNotEmpty && _insert(event, emptyRects)) {
-        unusedRects = emptyRects;
-      } else {
-        columnsOfEvents.add([event]);
+    bool inserted = false;
+    for (int i = 0; i < columnsOfEvents.length; i++) {
+      List<Event> column = columnsOfEvents[i];
+      if (column[column.length - 1].end <= event.start) {
+        column.add(event);
+        inserted = true;
+        break;
       }
+    }
+    if (!inserted) {
+      columnsOfEvents.add([event]);
     }
     start = start < event.start ? start : event.start;
     end = end > event.end ? end : event.end;
   }
 
-  bool _insert(Event event, List<Map<String, int>> emptyRects) {
-    bool placed = false;
-    for (int i = 0; i < emptyRects.length; i++) {
-      var rect = emptyRects[i];
-      if (event.start >= rect['start']! && event.end <= rect['end']!) {
-        columnsOfEvents[rect['columnIndex']!].add(event);
-        placed = true;
-        if (event.start == rect['start'] && event.end == rect['end']) {
-          emptyRects.removeAt(i);
-        } else if (event.start == rect['start']) {
-          emptyRects[i]['start'] = event.end.toInt();
-        } else if (event.end == rect['end']) {
-          emptyRects[i]['end'] = event.start.toInt();
-        } else {
-          emptyRects.replaceRange(
-            i,
-            i + 1,
-            [
-              {
-                'start': rect['start']!,
-                'end': event.start.toInt(),
-                'columnIndex': rect['columnIndex']!
-              },
-              {
-                'start': event.end.toInt(),
-                'end': rect['end']!,
-                'columnIndex': rect['columnIndex']!
-              }
-            ],
-          );
-        }
-        break;
-      }
-    }
-    return placed;
-  }
-
-  List<Map<String, int>> _getEmptyRects(double start, double end) {
-    List<Map<String, int>> emptyRects = [];
-    for (int columnIndex = 0;
-        columnIndex < columnsOfEvents.length;
-        columnIndex++) {
-      List<Event> column = columnsOfEvents[columnIndex];
-      double lastEnd = start;
-      for (Event event in column) {
-        if (event.start > lastEnd) {
-          emptyRects.add({
-            'start': lastEnd.toInt(),
-            'end': event.start.toInt(),
-            'columnIndex': columnIndex
-          });
-        }
-        lastEnd = lastEnd > event.end ? lastEnd : event.end;
-      }
-      if (lastEnd < end) {
-        emptyRects.add({
-          'start': lastEnd.toInt(),
-          'end': end.toInt(),
-          'columnIndex': columnIndex
-        });
-      }
-    }
-    return emptyRects;
-  }
-
   LayoutGroup calcLayout() {
     int columnCount = columnsOfEvents.length;
-    double totalHeight = end - start;
+    num totalHeight = end - start;
 
-    List<EventLayout> items = [];
-    for (int i = 0; i < columnsOfEvents.length; i++) {
-      List<Event> events = columnsOfEvents[i];
-      for (Event el in events) {
-        items.add(EventLayout(
+    List<EventLayout> items = columnsOfEvents.expand((events) {
+      int i = columnsOfEvents.indexOf(events);
+      return events.map((el) {
+        return EventLayout(
           event: el,
           column: i,
           top: (el.start - start) / totalHeight,
           height: (el.end - el.start) / totalHeight,
           bottom: (end - el.end) / totalHeight,
-        ));
-      }
-    }
+        );
+      });
+    }).toList();
 
     return LayoutGroup(
       start: start,
@@ -186,8 +118,9 @@ List<Group> mergeEvents(List<Event> events) {
 }
 
 List<LayoutGroup> processEvents(List<Event> events) {
-  events.sort((a, b) => a.start.compareTo(b.start) != 0
-      ? a.start.compareTo(b.start)
-      : b.end.compareTo(a.end));
-  return mergeEvents(events).map((group) => group.calcLayout()).toList();
+  List<Event> sortedEvents = List.from(events);
+  sortedEvents.sort((a, b) => a.start.compareTo(b.start) == 0
+      ? b.end.compareTo(a.end)
+      : a.start.compareTo(b.start));
+  return mergeEvents(sortedEvents).map((group) => group.calcLayout()).toList();
 }
