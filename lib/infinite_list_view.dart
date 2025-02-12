@@ -260,6 +260,7 @@ class InfiniteListViewState extends State<InfiniteListView> {
   }
 }
 
+/// Adapted from flutter/lib/src/widgets/list_wheel_scroll_view.dart
 class FixedExtentScrollable extends Scrollable {
   const FixedExtentScrollable({
     super.key,
