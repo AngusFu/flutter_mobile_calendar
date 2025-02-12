@@ -1,5 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
+// SEE https://pub.dev/packages/json_serializable
+// flutter pub run build_runner build --delete-conflicting-outputs
+
 part 'layouts.g.dart';
 
 @JsonSerializable()
