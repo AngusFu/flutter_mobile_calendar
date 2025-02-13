@@ -9,6 +9,11 @@ class Event extends BaseRange {
   final String id;
 
   Event(super.start, super.end, this.id);
+
+  @override
+  String toString() {
+    return 'Event{id: $id, start: $start, end: $end}';
+  }
 }
 
 class EventLayout {
@@ -37,6 +42,11 @@ class LayoutGroup extends BaseRange {
     required this.items,
     required this.columnCount,
   }) : super(start, end);
+
+  @override
+  String toString() {
+    return 'LayoutGroup{start: $start, end: $end, items: $items, columnCount: $columnCount}';
+  }
 }
 
 // 定义 Group 类

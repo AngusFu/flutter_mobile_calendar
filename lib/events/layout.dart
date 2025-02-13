@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_calendar/models/layouts.dart';
+import 'package:flutter_mobile_calendar/events/group.dart';
 
 class Style {
   String boxSizing;
@@ -45,23 +45,23 @@ List<Style> getDayEventsLayout({
   final canvasHeight = (height / 25) * 24;
 
   return groups.expand((group) {
-    final columnWidth = width / group.columnCount!;
-    final groupHeight = ((group.end! - group.start!) / dayRange) * canvasHeight;
-    final groupY = (group.start! / dayRange) * canvasHeight;
+    final columnWidth = width / group.columnCount;
+    final groupHeight = ((group.end - group.start) / dayRange) * canvasHeight;
+    final groupY = (group.start / dayRange) * canvasHeight;
     const groupX = 0;
 
-    return group.items!.map((el) {
+    return group.items.map((el) {
       const space = 2;
 
-      final itemHeight = el.event!.end! - el.event!.start! < 30 * 60 * 1000
+      final itemHeight = el.event.end - el.event.start < 30 * 60 * 1000
           ? (1.04167 / 100) * canvasHeight - space
-          : el.height! * groupHeight - space;
+          : el.height * groupHeight - space;
 
       return Style(
         boxSizing: 'border-box',
         position: 'absolute',
-        left: groupX + el.column! * columnWidth,
-        top: groupY + el.top! * groupHeight,
+        left: groupX + el.column * columnWidth,
+        top: groupY + el.top * groupHeight,
         width: columnWidth - space,
         height: itemHeight,
         paddingLeft: 2,

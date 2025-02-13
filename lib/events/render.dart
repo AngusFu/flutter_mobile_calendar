@@ -1,34 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_calendar/events/layout.dart';
 
 class LayoutInfo {
   final Style style;
   final TypoData typoData;
 
   LayoutInfo({required this.style, required this.typoData});
-}
-
-class Style {
-  final double left;
-  final double top;
-  final double width;
-  final double height;
-  final double borderRadius;
-  final Color backgroundColor;
-  final Color borderColor;
-  final double borderLeftWidth;
-  final double paddingLeft;
-
-  Style({
-    required this.left,
-    required this.top,
-    required this.width,
-    required this.height,
-    required this.borderRadius,
-    required this.backgroundColor,
-    required this.borderColor,
-    required this.borderLeftWidth,
-    required this.paddingLeft,
-  });
 }
 
 class TypoData {

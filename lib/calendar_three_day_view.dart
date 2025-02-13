@@ -1,15 +1,15 @@
-import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_mobile_calendar/events/group.dart';
 import 'package:flutter_mobile_calendar/events/layout.dart';
+import 'package:flutter_mobile_calendar/events/render.dart';
+
 import 'package:flutter_mobile_calendar/grid_column.dart';
 import 'package:flutter_mobile_calendar/infinite_list_view.dart';
 import 'package:flutter_mobile_calendar/utils/lunar.dart';
-import 'package:flutter_mobile_calendar/mock.dart';
-import 'package:flutter_mobile_calendar/models/layouts.dart';
 import 'package:flutter_mobile_calendar/scroll_controller/linked_scroll_controller.dart';
 
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
@@ -228,98 +228,92 @@ class ThreeDayViewState extends State<ThreeDayView> {
       scrollDirection: Axis.horizontal,
       controller: _eventsListController,
       itemBuilder: (context, index) {
+        var layouts = getDayEventsLayout(
+            width: _columnWidth,
+            height: 1360,
+            groups: processEvents(DataService.getEventsForDate()));
+
         return EventsGridPaper(
           color: const Color.fromARGB(255, 60, 138, 62),
           width: _columnWidth,
           height: 1360 / 25,
-          child: const EventsColumn(),
+          // child: const EventsColumn(),
+          child: CustomPaint(
+            painter: EventPainter(layouts.map((layout) {
+              return LayoutInfo(
+                  style: layout,
+                  typoData: TypoData(
+                    text: 'Event',
+                    color: layout.color,
+                    iconsPath2D: [],
+                  ));
+            }).toList()),
+          ),
         );
       },
     );
   }
 }
 
-class FaceOutlinePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    // Define a paint object
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 4.0
-      ..color = Colors.indigo;
-
-    // Left eye
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-          const Rect.fromLTWH(20, 40, 100, 100), const Radius.circular(20)),
-      paint,
-    );
-    // Right eye
-    canvas.drawOval(
-      Rect.fromLTWH(size.width - 120, 40, 100, 100),
-      paint,
-    );
-    // Mouth
-    final mouth = Path();
-    mouth.moveTo(size.width * 0.8, size.height * 0.6);
-    mouth.arcToPoint(
-      Offset(size.width * 0.2, size.height * 0.6),
-      radius: const Radius.circular(150),
-    );
-    mouth.arcToPoint(
-      Offset(size.width * 0.8, size.height * 0.6),
-      radius: const Radius.circular(200),
-      clockwise: false,
-    );
-
-    canvas.drawPath(mouth, paint);
-  }
-
-  @override
-  bool shouldRepaint(FaceOutlinePainter oldDelegate) => false;
-}
-
-class EventsColumn extends StatelessWidget {
-  const EventsColumn({super.key});
-
-  List<LayoutGroup> _getMockLayouts() {
-    final Iterable layouts = jsonDecode(mockJSON);
-    return List<LayoutGroup>.from(
-        layouts.map((model) => LayoutGroup.fromJson(model)));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final layouts =
-        getDayEventsLayout(width: 110, height: 1360, groups: _getMockLayouts());
-
-    return Stack(
-      children: layouts.map((el) {
-        return Positioned(
-          left: el.left,
-          top: el.top,
-          width: el.width,
-          height: el.height,
-          child: Container(
-            width: el.width,
-            height: el.height,
-            decoration: BoxDecoration(
-              color: el.backgroundColor,
-              borderRadius: BorderRadius.circular(el.borderRadius),
-              border: Border(
-                  left: BorderSide(
-                color: el.borderColor,
-                width: el.borderLeftWidth,
-                style: BorderStyle.solid,
-              )),
-            ),
-            child: const Text(''),
-          ),
-        );
-      }).toList(),
-    );
+class DataService {
+  static List<Event> getEventsForDate() {
+    var listOfEvents = <Event>[];
+    var rnd = Random();
+    var count = rnd.nextInt(30);
+    for (var i = 0; i < count; i++) {
+      var start = rnd.nextInt(24 * 60 * 60 * 1000);
+      var end = start + 60 * 60 * 1000;
+      listOfEvents.add(Event(start.toDouble(), end.toDouble(), i.toString()));
+    }
+    return listOfEvents;
   }
 }
+
+// class EventsColumn extends StatelessWidget {
+//   const EventsColumn({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // generate random events
+//     var listOfEvents = <Event>[];
+//     var rnd = Random();
+//     for (var i = 0; i < 10; i++) {
+//       // random start and end time
+//       var start = rnd.nextInt(24 * 60 * 60 * 1000);
+//       var end = start + 60 * 60 * 1000;
+//       listOfEvents.add(Event(start.toDouble(), end.toDouble(), i.toString()));
+//     }
+
+//     final layouts = getDayEventsLayout(
+//         width: 110, height: 1360, groups: processEvents(listOfEvents));
+
+//     return Stack(
+//       children: layouts.map((el) {
+//         return Positioned(
+//           left: el.left,
+//           top: el.top,
+//           width: el.width,
+//           height: el.height,
+//           child: Container(
+//             width: el.width,
+//             height: el.height,
+//             decoration: BoxDecoration(
+//               color: el.backgroundColor,
+//               borderRadius: BorderRadius.circular(el.borderRadius),
+//               border: Border(
+//                   left: BorderSide(
+//                 color: el.borderColor,
+//                 width: el.borderLeftWidth,
+//                 style: BorderStyle.solid,
+//               )),
+//             ),
+//             child: const Text(''),
+//           ),
+//         );
+//       }).toList(),
+//     );
+//   }
+// }
 
 class DateCell extends StatelessWidget {
   final DateTime date;
