@@ -19,7 +19,7 @@ jobs:
       - name: Download Dependencies
         run: flutter pub get
       - name: Build
-        run: flutter build web
+        run: flutter build web --base-href="/flutter_mobile_calendar/"
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
